@@ -29,7 +29,18 @@ function mean(nums) {
 }
 
 function median(nums) {
+    const sortedNums = nums.sort((a, b) => a - b);
 
+    let result;
+    const midIndex = sortedNums.length / 2;
+
+    if (nums % 2 === 0) {
+        result = (sortedNums[midIndex - 1] + sortedNums[midIndex]) / 2;
+    } else {
+        result = sortedNums[Math.floor(midIndex)];
+    }
+
+    return result;
 }
 
 function mode(nums) {
@@ -40,8 +51,8 @@ function parseMathRequest(action, req, res) {
     try {
         const nums = parseNums(req.query["nums"]);
         return res.send({
-            operation: mean.name,
-            value: mean(nums)
+            operation: action.name,
+            value: action(nums)
         });
     } catch (err) {
         res.statusCode = 400;
@@ -53,6 +64,10 @@ function parseMathRequest(action, req, res) {
 
 app.get('/mean', (req, res) => {
     return parseMathRequest(mean, req, res);
+})
+
+app.get('/median', (req, res) => {
+    return parseMathRequest(median, req, res);
 })
 
 app.listen(3000, () => {

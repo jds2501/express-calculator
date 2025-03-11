@@ -44,7 +44,28 @@ function median(nums) {
 }
 
 function mode(nums) {
+    const numMap = new Map();
 
+    for (let index = 0; index < nums.length; index++) {
+        const num = nums[index];
+        if (numMap.has(num)) {
+            numMap.set(num, numMap.get(num) + 1);
+        } else {
+            numMap.set(num, 1);
+        }
+    }
+
+    let highestValue = null;
+    let highestCount = null;
+
+    for (const [num, count] of numMap) {
+        if (highestValue === null || count > highestCount) {
+            highestValue = num;
+            highestCount = count;
+        }
+    }
+
+    return highestValue;
 }
 
 function parseMathRequest(action, req, res) {
@@ -68,6 +89,10 @@ app.get('/mean', (req, res) => {
 
 app.get('/median', (req, res) => {
     return parseMathRequest(median, req, res);
+})
+
+app.get('/mode', (req, res) => {
+    return parseMathRequest(mode, req, res);
 })
 
 app.listen(3000, () => {

@@ -2,20 +2,42 @@ const express = require('express');
 
 const app = express();
 
-app.get('/', (req, res) => {
-    const nums = req.query["nums"];
-
-    if (!nums) {
-        res.statusCode = 400;
-        return res.send({
-            error: "nums are required"
-        });
+function parseNums(numsParam) {
+    if (!numsParam) {
+        throw new Error("nums are required");
     }
 
-    return res.send({
-        operation: "mean",
-        value: 4
-    });
+    const splitNums = numsParam.split(",");
+    const retNums = [];
+
+    for (let index = 0; index < splitNums.length; index++) {
+        const splitNum = splitNums[index];
+
+        if (isNaN(splitNum)) {
+            throw new Error(`${splitNum} is not a number.`);
+        }
+
+        retNums.push(Number(splitNum));
+    }
+
+    return retNums;
+}
+
+app.get('/', (req, res) => {
+    let nums;
+
+    try {
+        nums = parseNums(req.query["nums"]);
+        return res.send({
+            operation: "mean",
+            value: nums
+        });
+    } catch (err) {
+        res.statusCode = 400;
+        return res.send({
+            error: err.message
+        });
+    }
 })
 
 app.listen(3000, () => {

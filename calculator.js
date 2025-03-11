@@ -9,7 +9,7 @@ function median(nums) {
     let result;
     const midIndex = sortedNums.length / 2;
 
-    if (nums % 2 === 0) {
+    if (nums.length % 2 === 0) {
         result = (sortedNums[midIndex - 1] + sortedNums[midIndex]) / 2;
     } else {
         result = sortedNums[Math.floor(midIndex)];

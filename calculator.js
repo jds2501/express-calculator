@@ -30,17 +30,21 @@ function mode(nums) {
         }
     }
 
-    let highestValue = null;
+    let highestValues = [];
     let highestCount = null;
 
     for (const [num, count] of numMap) {
-        if (highestValue === null || count > highestCount) {
-            highestValue = num;
-            highestCount = count;
+        if (count > 1) {
+            if (highestValues === null || count > highestCount) {
+                highestValues = [num];
+                highestCount = count;
+            } else if (count === highestCount) {
+                highestValues.push(num);
+            }
         }
     }
 
-    return highestValue;
+    return highestValues;
 }
 
 module.exports = { mean, median, mode };

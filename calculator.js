@@ -1,6 +1,14 @@
 function mean(nums) {
-    const sum = nums.reduce((acculumator, currentValue) => acculumator + currentValue);
-    return sum / nums.length;
+    let result;
+
+    if (nums.length > 0) {
+        const sum = nums.reduce((acculumator, currentValue) => acculumator + currentValue);
+        result = sum / nums.length;
+    } else {
+        result = 0;
+    }
+
+    return result;
 }
 
 function median(nums) {
